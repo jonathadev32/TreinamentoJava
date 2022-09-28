@@ -43,7 +43,8 @@ public class AuthController {
     	   return new ResponseEntity<>(HttpStatus.NO_CONTENT);
        }
 
-        String jwt = "54df6gr346sgs6543544fdgs435";
+        String jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+
         return ResponseEntity.ok(jwt);
     }
 

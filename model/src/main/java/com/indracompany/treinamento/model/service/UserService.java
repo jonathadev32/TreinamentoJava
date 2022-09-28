@@ -30,6 +30,12 @@ public class UserService {
 	        return userRepository.findByEmail(email);
 	    }
 	    
+	    public User findByEmailAndPassword(String email, String password) {
+	    	String hashPwd = passwordEncoder.encode(password);
+	        return userRepository.findByEmailAndPassword(email, hashPwd);
+	        
+	    }
+	    
 	    
 
 	   
