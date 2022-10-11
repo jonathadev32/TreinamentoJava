@@ -21,22 +21,7 @@ public class ExtratoService extends GenericCrudService<Extrato,Long, ExtratoRepo
     @Autowired
     private  ExtratoRepository extratorepository;
 
-    public List<Extrato> pesquisarExtrato(String numero, String agencia){
-        if(!StringUtils.isBlank(numero) || !StringUtils.isBlank(agencia) ){
-            List<Extrato> extratos = extratorepository.findByExtrato(numero, agencia);
-            if(extratos.isEmpty()){
-                throw new AplicacaoException(ExceptionValidacoes.ALERTA_NENHUM_REGISTRO_ENCONTRADO);
-            }
-            return extratos;
-        }else{
-            throw  new AplicacaoException(ExceptionValidacoes.ERRO_CONTA_INVALIDA);
-        }
-
-    }
-
-   
-
-    public List<Extrato> pesquisarExtratoPorIntervaloDeData(String numero, String agencia, String dataInicio, String dataFim){
+    public List<Extrato> pesquisarExtratoPorPeriodo(String numero, String agencia, String dataInicio, String dataFim){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate dataFormatadaInicio = LocalDate.parse(dataInicio, formatter);
         LocalDate dataFormatadaFim = LocalDate.parse(dataFim, formatter);
@@ -44,7 +29,7 @@ public class ExtratoService extends GenericCrudService<Extrato,Long, ExtratoRepo
             if(dataFormatadaFim.isBefore(dataFormatadaInicio) || dataFormatadaInicio.isAfter(dataFormatadaFim)){
                 throw new AplicacaoException(ExceptionValidacoes.ERRO_INTERVALO_DATA_INVALIDA);
             }
-            List<Extrato> extratoPorIntervalo = extratorepository.findByExtratoPorIntervalo(numero,agencia,dataFormatadaInicio,dataFormatadaFim);
+            List<Extrato> extratoPorIntervalo = extratorepository.findByExtratoPorPeriodo(numero,agencia,dataFormatadaInicio,dataFormatadaFim);
             if(extratoPorIntervalo.isEmpty()){
                 throw new AplicacaoException(ExceptionValidacoes.ALERTA_NENHUM_REGISTRO_ENCONTRADO);
             }

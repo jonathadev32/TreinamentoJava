@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 
 @Entity
-@Table(name = "ExtratoJA")
+@Table(name = "extrato_jas")
 @Data
 public class Extrato extends GenericEntity<Long>{
 
@@ -33,6 +33,6 @@ public class Extrato extends GenericEntity<Long>{
 
 
     @ManyToOne
-    @JoinColumn(name = "fk_conta_id")
+    @JoinColumn(name = "fk_conta_jan_id")
     private ContaBancaria contaBancaria;
 }

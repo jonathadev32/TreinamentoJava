@@ -3,8 +3,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,30 +19,34 @@ import com.indracompany.treinamento.payload.SignInRequest;
 
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("rest/auth")
 public class AuthController {
 	
 	@Autowired
 	private UserService userService;
 	
-	@Autowired
-    private AuthenticationManager authenticationManager;
-    
-
-    public AuthController(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
-      
-    }
+	
+	
 
     @PostMapping(value = "/signIn", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> authenticate(@RequestBody SignInRequest signInRequest) {
-
+    	
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        
+        
+   
        User user = userService.findByEmail(signInRequest.getEmail());
        
-       if(user == null) {
-    	   return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+       
+       
+       boolean validPassword = encoder.matches(signInRequest.getPassword(), user.getPassword());
+       
+      
+       if(!validPassword) {
+    	   return new ResponseEntity<>(HttpStatus.NOT_FOUND);
        }
 
+     
         String jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
 
         return ResponseEntity.ok(jwt);

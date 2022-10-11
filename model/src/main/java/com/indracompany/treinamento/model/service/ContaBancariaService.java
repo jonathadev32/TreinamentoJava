@@ -1,10 +1,12 @@
 package com.indracompany.treinamento.model.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 
 import java.util.List;
 
+import com.indracompany.treinamento.model.entity.Extrato;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +27,7 @@ import com.indracompany.treinamento.util.CpfUtil;
 public class ContaBancariaService extends GenericCrudService<ContaBancaria, Long, ContaBancariaRepository> {
 
 	@Autowired
-	private ClienteService clienteService;
+	private ExtratoService extratoService;
 
 	@Autowired
 	private ContaBancariaRepository contaBancariaRepository;
@@ -69,6 +71,15 @@ public class ContaBancariaService extends GenericCrudService<ContaBancaria, Long
 		ContaBancaria contaBancaria = this.carregarConta(dto.getAgencia(), dto.getNumeroConta());
 		contaBancaria.setSaldo(contaBancaria.getSaldo() + dto.getValor());
 		super.salvar(contaBancaria);
+		
+		Extrato extrato = new Extrato();
+		LocalDate dataAtual = LocalDate.now();
+		extrato.setContaBancaria(contaBancaria);
+		extrato.setTipoDeOperacao("D");
+		extrato.setValor(dto.getValor());
+		extrato.setData(dataAtual);
+		extrato.setObservacao("DEPOSITO");
+		extratoService.salvar(extrato);
 	}
 
 	public void sacar(SaqueDTO dto) {
@@ -78,6 +89,15 @@ public class ContaBancariaService extends GenericCrudService<ContaBancaria, Long
 		}
 		contaBancaria.setSaldo(contaBancaria.getSaldo() - dto.getValor());
 		super.salvar(contaBancaria);
+		
+		Extrato extrato = new Extrato();
+		LocalDate dataAtual = LocalDate.now();
+		extrato.setContaBancaria(contaBancaria);
+		extrato.setTipoDeOperacao("S");
+		extrato.setValor(dto.getValor());
+		extrato.setData(dataAtual);
+		extrato.setObservacao("SAQUE");
+		extratoService.salvar(extrato);
 	}
 
 	@Transactional(rollbackFor = Exception.class)
@@ -96,6 +116,7 @@ public class ContaBancariaService extends GenericCrudService<ContaBancaria, Long
 		depositoDto.setValor(transferenciaDto.getValor());
 
 		this.depositar(depositoDto);
+		
 
 	}
 

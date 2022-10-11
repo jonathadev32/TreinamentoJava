@@ -1,6 +1,7 @@
 package com.indracompany.treinamento.model.entity;
 
 import javax.persistence.Column;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,7 +14,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Entity
-@Table(name = "contas_bancarias")
+@Table(name = "contas_jan")
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ContaBancaria extends GenericEntity<Long>{

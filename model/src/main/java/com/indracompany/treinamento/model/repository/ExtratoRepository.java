@@ -11,10 +11,8 @@ import java.util.List;
 @Repository
 public interface ExtratoRepository extends GenericCrudRepository<Extrato,Long> {
 
-        @Query(value="select e from Extrato e where e.contaBancaria.numero = :numero and e.contaBancaria.agencia = :agencia")
-        List<Extrato> findByExtrato(String numero, String agencia);
 
-        @Query(value = "select e from Extrato e where e.contaBancaria.agencia =:agencia and e.contaBancaria.numero=:numero and e.data between :dataInicio and :dataFim")
-         List<Extrato> findByExtratoPorIntervalo(String numero, String agencia, LocalDate dataInicio, LocalDate dataFim);
+    @Query(value = "select e from Extrato e where e.contaBancaria.agencia =:agencia and e.contaBancaria.numero=:numero and e.data between :dataInicio and :dataFim")
+    List<Extrato> findByExtratoPorPeriodo(String numero, String agencia, LocalDate dataInicio, LocalDate dataFim);
         
 }

@@ -1,7 +1,5 @@
 package com.indracompany.treinamento.controller.rest;
 
-import java.util.List;
-
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +23,8 @@ public class UserRest {
 	@Autowired
 	private UserService userService;
 
+	
+	
     @PostMapping(value = "/criarUsuario", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> create(@Valid @RequestBody User user) {
         User u = userService.create(user);
@@ -34,12 +34,15 @@ public class UserRest {
 		return new ResponseEntity<>(u, HttpStatus.OK);
     }
 
+   
     @GetMapping(value = "/bucarUsuarios", produces = MediaType.APPLICATION_JSON_VALUE)
     public Iterable<User> findAll() {
         return userService.findAll();
     }
     
-    @GetMapping(value = "/bucarUsuario", produces = MediaType.APPLICATION_JSON_VALUE)
+    
+    // Buscar usuario por email
+    @GetMapping(value = "/bucarUsuarioPorEmail", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<User> findByEmail(@RequestParam String email) {
 		User user = userService.findByEmail(email);
 		if (user == null) {

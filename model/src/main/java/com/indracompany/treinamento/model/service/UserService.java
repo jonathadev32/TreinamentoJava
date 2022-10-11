@@ -15,9 +15,12 @@ public class UserService {
 	    private PasswordEncoder passwordEncoder;  
 	 
 	
-	    public User create(User user) {	      	       
+	    public User create(User user) {	      
+	    	
 	        String hashPwd = passwordEncoder.encode(user.getPassword());
 	        user.setPassword(hashPwd);
+	        
+	     
 	        return userRepository.save(user);
 	    }
 
@@ -26,20 +29,11 @@ public class UserService {
 	        return userRepository.findAll();
 	    }
 	    
+	  
 	    public User findByEmail(String email) {
 	        return userRepository.findByEmail(email);
 	    }
 	    
-	    public User findByEmailAndPassword(String email, String password) {
-	    	String hashPwd = passwordEncoder.encode(password);
-	        return userRepository.findByEmailAndPassword(email, hashPwd);
-	        
-	    }
-	    
-	    
 
-	   
-	
-	
 
 }
